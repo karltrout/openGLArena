@@ -39,10 +39,10 @@ public class MasterRenderer {
     private static final float NEAR_PLANE = 0.1f;
     private static final float FAR_PLANE = 10000.0f;
 
-    //SKY COLOR  = 67.1, 70.2, 77.3
-    private static float RED = .671f;
-    private static float GREEN = .702f;
-    private static float BLUE = .773f;
+    //SKY COLOR  = 83.1, 94.5, 97.3
+    private static float RED   = .831f;
+    private static float GREEN = .945f;
+    private static float BLUE  = .973f;
 
 
     private Map<TexturedModel, List<Entity>> entities = new HashMap();
@@ -84,7 +84,7 @@ public class MasterRenderer {
         terrainRenderer.render(terrains);
         terrainShader.stop();
 
-        skyboxRenderer.render(camera);
+        skyboxRenderer.render(camera, RED, GREEN, BLUE);
         terrains.clear();
         entities.clear();
 

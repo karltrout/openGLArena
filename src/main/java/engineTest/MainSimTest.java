@@ -52,7 +52,7 @@ public class MainSimTest {
         Terrain terrain3 = new Terrain(0,0, loader, new ModelTexture(loader.loadTexture("terrain")));
         Terrain terrain4 = new Terrain(-1,0, loader, new ModelTexture(loader.loadTexture("terrain")));
 
-        Light light = new Light(new Vector3f(200,2000,100), new Vector3f(1,1,1));
+        Light light = new Light(new Vector3f(200,1000,100), new Vector3f(1,1,1));
 
         Camera camera = new Camera(entity);
 
