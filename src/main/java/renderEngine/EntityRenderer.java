@@ -38,7 +38,7 @@ public class EntityRenderer {
             List<Entity> batch = entities.get(model);
             for ( Entity entity : batch ) {
                 prepareInstance(entity);
-                GL11.glDrawElements(GL11.GL_TRIANGLES,model.getModel().getVertexCount(),GL11.GL_UNSIGNED_INT,0);
+                GL11.glDrawElements(GL11.GL_TRIANGLES,model.getRawModel().getVertexCount(),GL11.GL_UNSIGNED_INT,0);
 
             }
             unbindTextureModel();
@@ -48,7 +48,7 @@ public class EntityRenderer {
     }
 
     private void prepareTextureModel(TexturedModel model){
-        RawModel rawModel = model.getModel();
+        RawModel rawModel = model.getRawModel();
         GL30.glBindVertexArray(rawModel.getVaoID());
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
@@ -72,7 +72,7 @@ public class EntityRenderer {
 
     private void prepareInstance(Entity entity){
 
-        Matrix4f transformationMatrix = Maths.createTranslationMatrix(
+        Matrix4f transformationMatrix = Maths.createTransformationMatrix(
                 entity.getPosition(),
                 entity.getRotX(),
                 entity.getRotY(),

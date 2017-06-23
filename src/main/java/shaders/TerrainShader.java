@@ -21,6 +21,9 @@ public class TerrainShader extends ShaderProgram {
     private int location_shineDamper;
     private int location_reflectivity;
     private int location_skyColor;
+    private int location_toShadowMapSpace;
+    private int location_backgroundTexture;
+    private int location_shadowMap;
 
     public TerrainShader() {
         super(VERTEX_FILE, FRAGMENT_FILE);
@@ -35,8 +38,12 @@ public class TerrainShader extends ShaderProgram {
         location_lightPosition = super.getUniformLocation("lightPosition");
         location_shineDamper = super.getUniformLocation("shineDamper");
         location_reflectivity = super.getUniformLocation("reflectivity");
+        location_shadowMap  = super.getUniformLocation("shadowMap");
+        location_backgroundTexture = super.getUniformLocation("backgroundTexture");
 
         location_skyColor= super.getUniformLocation("skyColor");
+        location_toShadowMapSpace = super.getUniformLocation("toShadowMapSpace");
+        System.out.println("location_shadowMap: "+location_shadowMap);
     }
 
     @Override
@@ -44,6 +51,15 @@ public class TerrainShader extends ShaderProgram {
         super.bindAttribute(0, "position");
         super.bindAttribute(1, "textureCoords");
         super.bindAttribute(2, "normal");
+    }
+
+    public void  connectTextureUnits(){
+        super.loadInt(location_backgroundTexture, 0);
+        super.loadInt(location_shadowMap, 1);
+    }
+
+    public void loadShadowMapSpace(Matrix4f shadowMap){
+        super.loadMatrix(location_toShadowMapSpace, shadowMap);
     }
 
     public void  loadTransformationMatrix(Matrix4f matrix){
