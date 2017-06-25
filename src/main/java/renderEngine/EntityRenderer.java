@@ -30,8 +30,9 @@ public class EntityRenderer {
 
     }
 
-    public void render(Map<TexturedModel, List<Entity>> entities){
+    public void render(Map<TexturedModel, List<Entity>> entities, Matrix4f toShadowSpace){
 
+        shader.loadShadowMapSpace(toShadowSpace);
         for (TexturedModel model : entities.keySet()
              ) {
             prepareTextureModel(model);

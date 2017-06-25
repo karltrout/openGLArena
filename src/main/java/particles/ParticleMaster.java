@@ -4,16 +4,14 @@ import entities.Camera;
 import org.lwjgl.util.vector.Matrix4f;
 import renderEngine.Loader;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by karltrout on 6/23/17.
  */
 public class ParticleMaster {
 
-    private static List<Particle> particles = new ArrayList<>();
+    private static Map<ParticleTexture, List<Particle>> particles = new HashMap<>();
     private static ParticleRenderer renderer;
 
     public static void init(Loader loader, Matrix4f projectionMatrix){
@@ -22,14 +20,26 @@ public class ParticleMaster {
 
     }
 
-    public static void update(){
-        Iterator<Particle> interator = particles.iterator();
-        while(interator.hasNext()){
-            Particle particle = interator.next();
-            boolean isAlive = particle.update();
-            if(!isAlive){
-                interator.remove();
+    public static void update(Camera camera){
+
+        Iterator<Map.Entry<ParticleTexture, List<Particle>>> mapIterator = particles.entrySet().iterator();
+        while (mapIterator.hasNext()){
+
+            List<Particle> particleList = mapIterator.next().getValue();
+            Iterator<Particle> interator = particleList.iterator();
+
+            while(interator.hasNext()){
+
+                Particle particle = interator.next();
+                boolean isAlive = particle.update(camera);
+                if(!isAlive){
+                    interator.remove();
+                    if (particleList.isEmpty()) mapIterator.remove();
+                }
+
             }
+            InsertionSort.sortHighToLow(particleList);
+
         }
 
     }
@@ -45,7 +55,17 @@ public class ParticleMaster {
     }
 
     public static void addParticle(Particle particle ){
-        particles.add(particle);
+
+        List<Particle> list = particles.get(particle.getTexture());
+        if(list == null){
+
+            list = new ArrayList<>();
+            particles.put(particle.getTexture(), list);
+
+        }
+
+        list.add(particle);
+
     }
 
 }

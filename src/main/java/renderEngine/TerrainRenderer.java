@@ -60,7 +60,7 @@ public class TerrainRenderer {
         GL20.glEnableVertexAttribArray(2);
 
         bindTextures(terrain);
-        terrainShader.loadShineAndReflectivity(1, 0);
+        terrainShader.loadShineAndReflectivity(50, 0.25f );
 
     }
 

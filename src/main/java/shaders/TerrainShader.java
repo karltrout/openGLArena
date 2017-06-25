@@ -43,7 +43,7 @@ public class TerrainShader extends ShaderProgram {
 
         location_skyColor= super.getUniformLocation("skyColor");
         location_toShadowMapSpace = super.getUniformLocation("toShadowMapSpace");
-        System.out.println("location_shadowMap: "+location_shadowMap);
+
     }
 
     @Override

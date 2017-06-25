@@ -15,6 +15,7 @@ public class Player extends Entity {
 
     private float currentSpeed = 0;
     private float currentTurnSpeed = 0;
+    public static final float GRAVITY = -50.0f;
 
     public Player(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
         super(model, position, rotX, rotY, rotZ, scale);

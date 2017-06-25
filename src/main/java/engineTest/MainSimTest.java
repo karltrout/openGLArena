@@ -7,9 +7,14 @@ import entities.Player;
 import guis.GuiRenderer;
 import guis.GuiTexture;
 import models.TexturedModel;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
+import particles.Particle;
+import particles.ParticleMaster;
+import particles.ParticleSystem;
+import particles.ParticleTexture;
 import renderEngine.*;
 import models.RawModel;
 import terrains.Terrain;
@@ -48,12 +53,12 @@ public class MainSimTest {
         }
 
         ModelTexture texture = new ModelTexture(loader.loadTexture("a380_AIRBUS"));
-        texture.setShineDampner(25);
-        texture.setReflectivity(0.5f);
+        texture.setShineDampner(50);
+        texture.setReflectivity(0.15f);
 
         TexturedModel texturedModel = new TexturedModel(model, texture);
 
-        Player entity = new Player(texturedModel, new Vector3f(0,5.75f,-100),-90,0,0,1.0f);
+        Player entity = new Player(texturedModel, new Vector3f(0,25.75f,-100),-90,0,0,1.0f);
         entities.add(entity);
 
         Terrain terrain = new Terrain(0,-1, loader, pack, null);
@@ -61,11 +66,12 @@ public class MainSimTest {
         Terrain terrain3 = new Terrain(0,0, loader, pack, null);
         Terrain terrain4 = new Terrain(-1,0, loader, pack,null);
 
-        Light light = new Light(new Vector3f(100000,200000,100000), new Vector3f(1,1,1));
+        Light light = new Light(new Vector3f(1000000,1000000,-1000000), new Vector3f(1,1,1));
 
         Camera camera = new Camera(entity);
 
         MasterRenderer masterRenderer = new MasterRenderer(loader, camera);
+        ParticleMaster.init(loader, masterRenderer.getProjectionMatrix());
 
         MousePicker picker = new MousePicker(camera, masterRenderer.getProjectionMatrix());
 
@@ -74,6 +80,9 @@ public class MainSimTest {
         //guis.add(shadowBoxGui);
         GuiRenderer guiRenderer = new GuiRenderer(loader);
 
+
+        ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("smoke2"),8);
+        ParticleSystem particleSystem = new ParticleSystem(particleTexture, 50, 1, -.005f,10);
 
         /*
          * Game Loop Here.
@@ -87,6 +96,14 @@ public class MainSimTest {
 
             picker.update();
 
+            Vector3f entityPosition = entity.getPosition();
+            Vector3f leftParticlePosition = new Vector3f(entityPosition.x+12.5f,entityPosition.y - 3f,entityPosition.z );
+            Vector3f rightParticlePosition = new Vector3f(entityPosition.x-12.5f,entityPosition.y - 3f,entityPosition.z );
+            particleSystem.generateParticles(leftParticlePosition);
+            particleSystem.generateParticles(rightParticlePosition);
+            ParticleMaster.update(camera );
+
+
             masterRenderer.renderShadowMap(entities, light);
             //System.out.println(picker.getCurrentRay());
 
@@ -97,16 +114,22 @@ public class MainSimTest {
             masterRenderer.processEntitity(entity);
 
             masterRenderer.render(light, camera);
+
+            ParticleMaster.renderParticles(camera);
+
+
             guiRenderer.render(guis);
 
             DisplayManager.updateDisplay();
 
         }
 
+        ParticleMaster.cleanUp();
         guiRenderer.cleanUp();
         masterRenderer.cleanUp();
         loader.cleanUp();
         DisplayManager.closeDisplay();
+
 
     }
 }

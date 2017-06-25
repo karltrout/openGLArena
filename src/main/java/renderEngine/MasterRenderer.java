@@ -76,7 +76,7 @@ public class MasterRenderer {
         shader.loadLight(sun);
         shader.loadViewMatrix(camera);
 
-        renderer.render(entities);
+        renderer.render(entities, shadowMapRenderer.getToShadowMapSpaceMatrix());
 
         shader.stop();
 
