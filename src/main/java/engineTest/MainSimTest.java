@@ -99,8 +99,10 @@ public class MainSimTest {
             Vector3f entityPosition = entity.getPosition();
             Vector3f leftParticlePosition = new Vector3f(entityPosition.x+12.5f,entityPosition.y - 3f,entityPosition.z );
             Vector3f rightParticlePosition = new Vector3f(entityPosition.x-12.5f,entityPosition.y - 3f,entityPosition.z );
-            particleSystem.generateParticles(leftParticlePosition);
-            particleSystem.generateParticles(rightParticlePosition);
+            if(Keyboard.isKeyDown(Keyboard.KEY_W)) {
+                particleSystem.generateParticles(leftParticlePosition);
+                particleSystem.generateParticles(rightParticlePosition);
+            }
             ParticleMaster.update(camera );
 
 
@@ -115,7 +117,8 @@ public class MainSimTest {
 
             masterRenderer.render(light, camera);
 
-            ParticleMaster.renderParticles(camera);
+                ParticleMaster.renderParticles(camera);
+
 
 
             guiRenderer.render(guis);
