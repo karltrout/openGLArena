@@ -9,16 +9,16 @@ import org.lwjgl.util.vector.Vector3f;
  */
 public class Camera {
 
-    private Player player;
+    private Entity player;
 
     private float distanceFromPlayer = 50;
-    private float angleAroundPlayer = 0;
+    private float angleAroundPlayer = 45;
 
     private  float pitch;
     private  float yaw;
     private float roll;
 
-    private Vector3f position= new Vector3f(0,10,0);
+    private Vector3f position= new Vector3f(0,0,0);
 
     public Vector3f getPosition() {
         return position;
@@ -72,8 +72,9 @@ public class Camera {
         position.y = player.getPosition().y + verticalDistance;
     }
 
-    public Camera( Player player ){
+    public Camera( Entity player ){
         this.player = player;
+        this.pitch = 15.0f;
     }
 
 
